@@ -1,0 +1,70 @@
+<html>
+<!DOCTYPE html>
+<head>
+	<title>Split the Bill</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="referrer" content="no-referrer">
+	<style>
+		input, select {font-size: 2em; width: 20em; max-width: 90vw; margin: 0.2em;}
+		form {margin: 1em 0;}
+		body {text-align: center;}
+		ul {text-align: left;}
+		table {width: 100%; border-collapse: collapse;}
+		th, td {width: 20%; text-align: left; border-bottom: 1px solid black;}
+		th:last-child, td:last-child {width: 60%;}
+		@media only screen and (min-width: 768px) {
+			input#date {width: 10em;}
+			select#category {width: 10em;}
+		}
+		@media only screen and (max-width: 767px) {
+			input, select {width: 95vw;}
+		}
+	</style>
+</head>
+<body>
+	<form method="post" action="account">
+		<select required id="member" name="member">
+			<option value="{{ .user }}">{{ .user }}</option>
+			{{ range .members -}}
+			{{- if ne $.user . -}}
+			<option value="{{ . }}">{{ . }}</option>
+			{{- end -}}
+			{{ end }}
+		</select>
+		<select required id="type" name="type">
+			<option value="payment">支払い</option>
+			{{ range .members -}}
+			{{- if ne $.user . -}}
+			<option value="transfer/{{.}}">受け渡し to {{.}}</option>
+			{{- end -}}
+			{{ end }}
+		</select>
+		<input required id="price" name="price" type="number">
+		<input required id="note" name="note">
+		<input type="submit">
+	</form>
+
+	<h2>集計</h2>
+	<h3>あなたの{{ index (index .summary .user) 0 }}金額</h3>
+	<p>
+		{{ index (index .summary .user) 1 }}
+	</p>
+
+	<h3>合計金額</h3>
+	<p>
+		{{ .total }}
+	</p>
+
+	<h2>履歴</h2>
+	<table>
+		<tr>
+			<th>支払者</th><th>価格</th><th>メモ</th>
+		</tr>
+		{{ range .accounts -}}
+		<tr>
+			<td>{{ .User }}</td><td>{{ .Price }}</td><td>{{ .Note }}</td>
+		</tr>
+		{{ end }}
+	</table>
+</body>
+</html>
