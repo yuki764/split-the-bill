@@ -10,5 +10,7 @@ Data is stored in Google Sheets (Google Spreadsheets) and must be followed the f
 
 ## Configuration Environment Variables
 
+|  |  |
+|--|--|
 | `SPREADSHEET_ID`   | (required) the ID of Google Sheets Spreadsheet |
 | `HTTP_PATH_PREFIX` | Path prefix to access input form |
