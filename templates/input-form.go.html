@@ -23,7 +23,7 @@
 </head>
 <body>
 	<form method="post" action="account">
-		<select required id="member" name="member">
+		<select required id="member" name="member" onchange="location.href='form?user='+value">
 			<option value="{{ .user }}">{{ .user }}</option>
 			{{ range .members -}}
 			{{- if ne $.user . -}}
